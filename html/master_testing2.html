@@ -1,0 +1,308 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>master_testing2</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-03-13"><meta name="DC.source" content="master_testing2.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">Use N4 station</a></li><li><a href="#2">Use O2 station</a></li><li><a href="#3">plot O2</a></li><li><a href="#4">plot N4 and O2</a></li></ul></div><h2 id="1">Use N4 station</h2><pre class="codeinput">clear
+basedir = <span class="string">'data/N4/'</span>;
+fdir    = dir(basedir);
+<span class="keyword">for</span> i = 3:length(fdir)
+    clear <span class="string">f</span> <span class="string">PXY</span>
+    fn = fdir(i).name;
+    <span class="keyword">if</span> strcmp(fn(1:3),<span class="string">'dop'</span>)
+        <span class="comment">% load data file</span>
+        disp(fn)
+        load([basedir fn])
+        freq = f;
+        clear <span class="string">f</span>
+        <span class="comment">% run RadarWIC</span>
+        masterRadarWIC
+        <span class="comment">% save results of inversion</span>
+        save([basedir fn(5) <span class="string">'_inv.mat'</span>],<span class="string">'f'</span>,<span class="string">'thw'</span>,<span class="string">'Sfh'</span>);
+        eval([<span class="string">'aX2'</span> fn(5) <span class="string">' = f;'</span>])
+        eval([<span class="string">'aY2'</span> fn(5) <span class="string">' = Sfh;'</span>])
+        <span class="comment">% load in situ spectra for plot / comparison</span>
+        insitu = load([basedir <span class="string">'insitu_'</span> fn(5) <span class="string">'.mat'</span>]);
+        eval([<span class="string">'aX1'</span> fn(5) <span class="string">' = insitu.f;'</span>])
+        eval([<span class="string">'aY1'</span> fn(5) <span class="string">' = insitu.Sf;'</span>])
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">% plot</span>
+figure(<span class="string">'InvertHardcopy'</span>,<span class="string">'off'</span>,<span class="string">'Color'</span>,[1 1 1],<span class="string">'OuterPosition'</span>,[593.8 -9.4 542.4 864]);
+subplot_spec4x2(aX1A,aY1A,aX2A,aY2A,1); title(<span class="string">'N4'</span>)
+subplot_spec4x2(aX1B,aY1B,aX2B,aY2B,2);
+subplot_spec4x2(aX1C,aY1C,aX2C,aY2C,3);
+subplot_spec4x2(aX1D,aY1D,aX2D,aY2D,4);
+subplot_spec4x2(aX1E,aY1E,aX2E,aY2E,5);
+subplot_spec4x2(aX1F,aY1F,aX2F,aY2F,6);
+subplot_spec4x2(aX1G,aY1G,aX2G,aY2G,7);
+subplot_spec4x2(aX1H,aY1H,aX2H,aY2H,8);
+</pre><pre class="codeoutput">dop_A.mat
+    0.6811
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  4.18  0.07 0.17 89.4  78.0
+Swell :  0.00  NaN NaN 
+Hybrid:  4.18  0.07 0.17 89.4  78.0
+dop_B.mat
+    0.2145
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  2.57  0.11 0.18 82.1  96.5
+Swell :  0.00  NaN NaN 
+Hybrid:  2.57  0.11 0.18 82.1  96.5
+dop_C.mat
+    0.1592
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  1.25  0.13 0.19 89.0  67.2
+Swell :  0.00  NaN NaN 
+Hybrid:  1.25  0.13 0.19 89.0  67.2
+dop_D.mat
+    0.3329
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  1.34  0.11 0.18 87.0  104.3
+Swell :  0.00  NaN NaN 
+Hybrid:  1.34  0.11 0.18 87.0  104.3
+dop_E.mat
+    1.1564
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  1.88  0.09 0.14 31.9  72.6
+Swell :  1.47  0.09 0.08 
+Hybrid:  2.08  0.09 0.13 31.6  66.9
+dop_F.mat
+    0.4813
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  1.29  0.11 0.18 61.8  104.6
+Swell :  0.00  NaN NaN 
+Hybrid:  1.29  0.11 0.18 61.8  104.6
+dop_G.mat
+    0.3685
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  1.99  0.13 0.18 48.9  46.3
+Swell :  0.00  NaN NaN 
+Hybrid:  1.99  0.13 0.18 48.9  46.3
+dop_H.mat
+    0.4085
+
+Wave Inversion model RadarWIC as described in Alattabi et al (2019)
+Calibration factors: aw=0.25  as=0.05
+Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
+          Hs   fp  fm  theta_p theta_m
+Wind  :  1.61  0.12 0.17 73.4  68.6
+Swell :  0.00  NaN NaN 
+Hybrid:  1.61  0.12 0.17 73.4  68.6
+</pre><h2 id="2">Use O2 station</h2><pre class="codeinput">basedir = <span class="string">'data/O2/'</span>;
+fdir = dir(basedir);
+<span class="keyword">for</span> i = 3:length(fdir)
+    clear <span class="string">f</span> <span class="string">PXY</span>
+    fn = fdir(i).name;
+    <span class="keyword">if</span> strcmp(fn(1:3),<span class="string">'dop'</span>)
+        <span class="comment">% load file</span>
+        disp(fn)
+        load([basedir fn])
+        freq = f;
+        clear <span class="string">f</span>
+        <span class="comment">% run RadarWIC</span>
+        masterRadarWIC
+        <span class="comment">% save results of inversion</span>
+        save([basedir fn(5) <span class="string">'_inv.mat'</span>],<span class="string">'f'</span>,<span class="string">'thw'</span>,<span class="string">'Sfh'</span>);
+        eval([<span class="string">'X2'</span> fn(5) <span class="string">' = f;'</span>])
+        eval([<span class="string">'Y2'</span> fn(5) <span class="string">' = Sfh;'</span>])
+        <span class="comment">% load in situ spectra for plot / comparison</span>
+        insitu = load([basedir <span class="string">'insitu_'</span> fn(5) <span class="string">'.mat'</span>]);
+        eval([<span class="string">'X1'</span> fn(5) <span class="string">' = insitu.f;'</span>])
+        eval([<span class="string">'Y1'</span> fn(5) <span class="string">' = insitu.Sf;'</span>])
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><h2 id="3">plot O2</h2><pre class="codeinput">figure(<span class="string">'InvertHardcopy'</span>,<span class="string">'off'</span>,<span class="string">'Color'</span>,[1 1 1],<span class="string">'OuterPosition'</span>,[593.8 -9.4 542.4 864]);
+subplot_spec4x2(X1A,Y1A,X2A,Y2A,1); title(<span class="string">'O2'</span>)
+subplot_spec4x2(X1B,Y1B,X2B,Y2B,2);
+subplot_spec4x2(X1C,Y1C,X2C,Y2C,3);
+subplot_spec4x2(X1D,Y1D,X2D,Y2D,4);
+subplot_spec4x2(X1E,Y1E,X2E,Y2E,5);
+subplot_spec4x2(X1F,Y1F,X2F,Y2F,6);
+subplot_spec4x2(X1G,Y1G,X2G,Y2G,7);
+subplot_spec4x2(X1H,Y1H,X2H,Y2H,8);
+</pre><img vspace="5" hspace="5" src="master_testing2_09.png" alt=""> <h2 id="4">plot N4 and O2</h2><pre class="codeinput">figure(<span class="string">'InvertHardcopy'</span>,<span class="string">'off'</span>,<span class="string">'Color'</span>,[1 1 1],<span class="string">'OuterPosition'</span>,[593.8 -9.4 542.4 864]);
+subplot_spec4x2ab(aX1A,aY1A,aX2A,aY2A,X1A,Y1A,X2A,Y2A,1); title(<span class="string">'N4/O2'</span>)
+subplot_spec4x2ab(aX1B,aY1B,aX2B,aY2B,X1B,Y1B,X2B,Y2B,2);
+subplot_spec4x2ab(aX1C,aY1C,aX2C,aY2C,X1C,Y1C,X2C,Y2C,3);
+subplot_spec4x2ab(aX1D,aY1D,aX2D,aY2D,X1D,Y1D,X2D,Y2D,4);
+subplot_spec4x2ab(aX1E,aY1E,aX2E,aY2E,X1E,Y1E,X2E,Y2E,5);
+subplot_spec4x2ab(aX1F,aY1F,aX2F,aY2F,X1F,Y1F,X2F,Y2F,6);
+subplot_spec4x2ab(aX1G,aY1G,aX2G,aY2G,X1G,Y1G,X2G,Y2G,7);
+subplot_spec4x2ab(aX1H,aY1H,aX2H,aY2H,X1H,Y1H,X2H,Y2H,8);
+</pre><img vspace="5" hspace="5" src="master_testing2_10.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Use N4 station
+clear
+basedir = 'data/N4/';
+fdir    = dir(basedir);
+for i = 3:length(fdir)
+    clear f PXY
+    fn = fdir(i).name;
+    if strcmp(fn(1:3),'dop')
+        % load data file
+        disp(fn)
+        load([basedir fn])
+        freq = f;
+        clear f   
+        % run RadarWIC
+        masterRadarWIC       
+        % save results of inversion
+        save([basedir fn(5) '_inv.mat'],'f','thw','Sfh');
+        eval(['aX2' fn(5) ' = f;'])
+        eval(['aY2' fn(5) ' = Sfh;'])       
+        % load in situ spectra for plot / comparison
+        insitu = load([basedir 'insitu_' fn(5) '.mat']);
+        eval(['aX1' fn(5) ' = insitu.f;'])
+        eval(['aY1' fn(5) ' = insitu.Sf;'])
+    end
+end
+% plot
+figure('InvertHardcopy','off','Color',[1 1 1],'OuterPosition',[593.8 -9.4 542.4 864]);
+subplot_spec4x2(aX1A,aY1A,aX2A,aY2A,1); title('N4')
+subplot_spec4x2(aX1B,aY1B,aX2B,aY2B,2);
+subplot_spec4x2(aX1C,aY1C,aX2C,aY2C,3);
+subplot_spec4x2(aX1D,aY1D,aX2D,aY2D,4);
+subplot_spec4x2(aX1E,aY1E,aX2E,aY2E,5);
+subplot_spec4x2(aX1F,aY1F,aX2F,aY2F,6);
+subplot_spec4x2(aX1G,aY1G,aX2G,aY2G,7);
+subplot_spec4x2(aX1H,aY1H,aX2H,aY2H,8);
+
+
+%% Use O2 station
+basedir = 'data/O2/';
+fdir = dir(basedir);
+for i = 3:length(fdir)
+    clear f PXY
+    fn = fdir(i).name;
+    if strcmp(fn(1:3),'dop')
+        % load file
+        disp(fn)
+        load([basedir fn])
+        freq = f;
+        clear f   
+        % run RadarWIC
+        masterRadarWIC
+        % save results of inversion
+        save([basedir fn(5) '_inv.mat'],'f','thw','Sfh');
+        eval(['X2' fn(5) ' = f;'])
+        eval(['Y2' fn(5) ' = Sfh;'])
+        % load in situ spectra for plot / comparison
+        insitu = load([basedir 'insitu_' fn(5) '.mat']);
+        eval(['X1' fn(5) ' = insitu.f;'])
+        eval(['Y1' fn(5) ' = insitu.Sf;'])
+    end
+end
+%% plot O2
+figure('InvertHardcopy','off','Color',[1 1 1],'OuterPosition',[593.8 -9.4 542.4 864]);
+subplot_spec4x2(X1A,Y1A,X2A,Y2A,1); title('O2')
+subplot_spec4x2(X1B,Y1B,X2B,Y2B,2);
+subplot_spec4x2(X1C,Y1C,X2C,Y2C,3);
+subplot_spec4x2(X1D,Y1D,X2D,Y2D,4);
+subplot_spec4x2(X1E,Y1E,X2E,Y2E,5);
+subplot_spec4x2(X1F,Y1F,X2F,Y2F,6);
+subplot_spec4x2(X1G,Y1G,X2G,Y2G,7);
+subplot_spec4x2(X1H,Y1H,X2H,Y2H,8);
+%% plot N4 and O2
+figure('InvertHardcopy','off','Color',[1 1 1],'OuterPosition',[593.8 -9.4 542.4 864]);
+subplot_spec4x2ab(aX1A,aY1A,aX2A,aY2A,X1A,Y1A,X2A,Y2A,1); title('N4/O2')
+subplot_spec4x2ab(aX1B,aY1B,aX2B,aY2B,X1B,Y1B,X2B,Y2B,2);
+subplot_spec4x2ab(aX1C,aY1C,aX2C,aY2C,X1C,Y1C,X2C,Y2C,3);
+subplot_spec4x2ab(aX1D,aY1D,aX2D,aY2D,X1D,Y1D,X2D,Y2D,4);
+subplot_spec4x2ab(aX1E,aY1E,aX2E,aY2E,X1E,Y1E,X2E,Y2E,5);
+subplot_spec4x2ab(aX1F,aY1F,aX2F,aY2F,X1F,Y1F,X2F,Y2F,6);
+subplot_spec4x2ab(aX1G,aY1G,aX2G,aY2G,X1G,Y1G,X2G,Y2G,7);
+subplot_spec4x2ab(aX1H,aY1H,aX2H,aY2H,X1H,Y1H,X2H,Y2H,8);
+##### SOURCE END #####
+--></body></html>

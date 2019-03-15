@@ -22,10 +22,14 @@ You should have received a copy of the GNU General Public License along with thi
 
 List of Files
 
-Main Functions: 
+Main Functions:
+
   ConfigRWIC.m, masterRadarWIC.m, RadarWIC.m
 
-Library Functions (../lib)
-  Bragg_peak.m,   ConditionDopRWIC.m,   Gauss_fit.m,   hfr_noise.m,   invSwellRWIC.m,   invWindRWIC.m,   plot_swell.m
-  plot_wind.m,   PXYint.m,   PXYsideband.m,   specSwellRWIC.m,   specWindRWIC.m,   spectral_noise.m
-  waveparams.m,   weightf_barrick.m,   wn2ndRWIC.m,   wspecRWIC.m
+Library Functions (../lib):
+
+  Bragg_peak.m,   ConditionDopRWIC.m,   Gauss_fit.m,   hfr_noise.m,   invSwellRWIC.m,   invWindRWIC.m,   plot_swell.m, 
+  
+  plot_wind.m,   PXYint.m,   PXYsideband.m,   specSwellRWIC.m,   specWindRWIC.m,   spectral_noise.m, 
+  
+  waveparams.m,   weightf_barrick.m,   wn2ndRWIC.m,   wspecRWIC.m, 

@@ -1,0 +1,190 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>plot_swell</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-17"><meta name="DC.source" content="plot_swell.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>plot_swell</h1><!--introduction--><p>Script to plot the analysis for Swell</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</a></li><li><a href="#2">Doppler swell analysis plot</a></li></ul></div><h2 id="1">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</h2><p>This file is part of RadarWIC.</p><p>RadarWIC is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p><h2 id="2">Doppler swell analysis plot</h2><p>original spec, Noise level, and Spec with Noise removed</p><pre class="codeinput">h3 = plot(freq,10*log10(PXY),<span class="string">'k'</span>,<span class="string">'linewidth'</span>,2);            <span class="comment">% noise removed</span>
+hold <span class="string">on</span>
+h4 = plot(freq(in),10*log10(PXY(in)),<span class="string">'m'</span>,<span class="string">'linewidth'</span>,2);    <span class="comment">% Bragg peak integration region negative</span>
+plot(freq(ip),10*log10(PXY(ip)),<span class="string">'m'</span>,<span class="string">'linewidth'</span>,2);         <span class="comment">% Bragg peak integration region positive</span>
+<span class="comment">% swell 2nd order sidebands</span>
+<span class="keyword">if</span> ~isnan(si1)
+h5=plot(freq(si1),10*log10(PXY(si1)),<span class="string">'r'</span>,<span class="string">'linewidth'</span>,2);
+<span class="keyword">end</span>
+<span class="keyword">if</span> ~isnan(si2)
+h5=plot(freq(si2),10*log10(PXY(si2)),<span class="string">'r'</span>,<span class="string">'linewidth'</span>,2);
+<span class="keyword">end</span>
+<span class="keyword">if</span> ~isnan(si3)
+h5=plot(freq(si3),10*log10(PXY(si3)),<span class="string">'r'</span>,<span class="string">'linewidth'</span>,2);
+<span class="keyword">end</span>
+<span class="keyword">if</span> ~isnan(si4)
+h5=plot(freq(si4),10*log10(PXY(si4)),<span class="string">'r'</span>,<span class="string">'linewidth'</span>,2);
+<span class="keyword">end</span>
+<span class="comment">% swell peaks for each sideband</span>
+plot(f1,10*log10(E1),<span class="string">'bs'</span>,<span class="string">'MarkerFaceColor'</span>,[0.8,0.8,0.8])
+plot(f2,10*log10(E2),<span class="string">'bs'</span>,<span class="string">'MarkerFaceColor'</span>,[0.8,0.8,0.8])
+plot(f3,10*log10(E3),<span class="string">'bs'</span>,<span class="string">'MarkerFaceColor'</span>,[0.8,0.8,0.8])
+plot(f4,10*log10(E4),<span class="string">'bs'</span>,<span class="string">'MarkerFaceColor'</span>,[0.8,0.8,0.8])
+ylim([10*log10(Noise*0.2) max(10*log10(PXY_or*1.2))])
+nr = 4; <span class="comment">% swell freqs</span>
+text(f1-55*df,5+10*log10(E1*1.25),num2str(round(10^nr*(f1-fn))/10^nr))
+text(f2,5+10*log10(E2*1.25),num2str(round(10^nr*(f2-fn))/10^nr))
+text(f3-55*df,5+10*log10(E3*1.25),num2str(round(10^nr*(f3-fp))/10^nr))
+text(f4,5+10*log10(E4*1.25),num2str(round(10^nr*(f4-fp))/10^nr))
+title(<span class="string">'RadarWIC - Swell Analysis'</span>,<span class="string">'FontSize'</span>,10,<span class="string">'FontWeight'</span>,<span class="string">'normal'</span>)
+xlabel(<span class="string">'f_D (Hz)'</span>);
+ylabel(<span class="string">'(dB)'</span>)
+
+grid <span class="string">on</span>
+set(gca,<span class="string">'linewidth'</span>,1);
+ax =gca;
+ax.GridAlpha = 1;
+ax.GridColor =  [0.8 0.8 0.8];
+ax.GridLineStyle = <span class="string">':'</span>;
+ax.LineWidth = 1;
+ax.TickLength  = [0.01 0.005];
+<span class="comment">% ax.XMinorTick = 'on';</span>
+<span class="comment">% ax.YMinorTick = 'on';</span>
+ax.FontSize=8;
+set(gca,<span class="string">'fontname'</span>,<span class="string">'arial'</span>,<span class="string">'FontSize'</span>,10,<span class="string">'FontWeight'</span>,<span class="string">'normal'</span>);
+set(gca,<span class="string">'linewidth'</span>,1);
+box <span class="string">off</span>
+legend( [h3 h4 h5],<span class="string">'\sigma(f_D)-n'</span>,<span class="string">'\int \sigma_1(f_D)df_D'</span>,<span class="string">'\sigma_2(f_D)-swell'</span>)
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% plot_swell
+% Script to plot the analysis for Swell
+%
+%% Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris
+%
+% This file is part of RadarWIC.
+%
+% RadarWIC is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+% 
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+% 
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
+%
+%% Doppler swell analysis plot
+%
+% original spec, Noise level, and Spec with Noise removed
+h3 = plot(freq,10*log10(PXY),'k','linewidth',2);            % noise removed
+hold on
+h4 = plot(freq(in),10*log10(PXY(in)),'m','linewidth',2);    % Bragg peak integration region negative
+plot(freq(ip),10*log10(PXY(ip)),'m','linewidth',2);         % Bragg peak integration region positive
+% swell 2nd order sidebands
+if ~isnan(si1)
+h5=plot(freq(si1),10*log10(PXY(si1)),'r','linewidth',2);
+end
+if ~isnan(si2)
+h5=plot(freq(si2),10*log10(PXY(si2)),'r','linewidth',2);
+end
+if ~isnan(si3)
+h5=plot(freq(si3),10*log10(PXY(si3)),'r','linewidth',2);
+end
+if ~isnan(si4)
+h5=plot(freq(si4),10*log10(PXY(si4)),'r','linewidth',2);
+end
+% swell peaks for each sideband
+plot(f1,10*log10(E1),'bs','MarkerFaceColor',[0.8,0.8,0.8])
+plot(f2,10*log10(E2),'bs','MarkerFaceColor',[0.8,0.8,0.8])
+plot(f3,10*log10(E3),'bs','MarkerFaceColor',[0.8,0.8,0.8])
+plot(f4,10*log10(E4),'bs','MarkerFaceColor',[0.8,0.8,0.8])
+ylim([10*log10(Noise*0.2) max(10*log10(PXY_or*1.2))])
+nr = 4; % swell freqs
+text(f1-55*df,5+10*log10(E1*1.25),num2str(round(10^nr*(f1-fn))/10^nr))
+text(f2,5+10*log10(E2*1.25),num2str(round(10^nr*(f2-fn))/10^nr))
+text(f3-55*df,5+10*log10(E3*1.25),num2str(round(10^nr*(f3-fp))/10^nr))
+text(f4,5+10*log10(E4*1.25),num2str(round(10^nr*(f4-fp))/10^nr))
+title('RadarWIC - Swell Analysis','FontSize',10,'FontWeight','normal')
+xlabel('f_D (Hz)');
+ylabel('(dB)')
+
+grid on
+set(gca,'linewidth',1);
+ax =gca;
+ax.GridAlpha = 1;
+ax.GridColor =  [0.8 0.8 0.8];
+ax.GridLineStyle = ':';
+ax.LineWidth = 1;
+ax.TickLength  = [0.01 0.005];
+% ax.XMinorTick = 'on';
+% ax.YMinorTick = 'on';
+ax.FontSize=8;
+set(gca,'fontname','arial','FontSize',10,'FontWeight','normal');
+set(gca,'linewidth',1);
+box off
+legend( [h3 h4 h5],'\sigma(f_D)-n','\int \sigma_1(f_D)df_D','\sigma_2(f_D)-swell')
+##### SOURCE END #####
+--></body></html>

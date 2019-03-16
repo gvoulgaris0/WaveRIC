@@ -6,7 +6,9 @@ This is the code described in Alattabi et al. (2019) for the inversion of the 2n
 
 Alattabi et al. (2019) presented calibrations coefficiens for the wind and swell parts of the Doppler spectrum. However, not clear if these coefficients are universal as this is under verification at this time. 
 
-Citation:  
+Code Citation:  
+Douglas, Cahl, Voulgaris, George, & Alattabi, Zaid. (2019, March 15). Wave Radar Inversion Code (WaveRIC) (Version V1.0.0). Zenodo. http://doi.org/10.5281/zenodo.2594033  
+Method Citation:  
 Zaid Alattabi, Z., D. Cahl, and G. Voulgaris (2019). Swell and Wind Wave Inversion Using a Single Very High Frequency (VHF) Radar. Journal of Oceanic and Atmospheric Technology, XX: yyyy-yyyy  
 
 Copyright 2019(c) Zaid Alattabi, Douglas Cahl, George Voulgaris

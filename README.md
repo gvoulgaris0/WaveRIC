@@ -5,9 +5,9 @@ This is the code described in Alattabi et al. (2019) for the inversion of the 2n
 
 Alattabi et al. (2019) presented calibrations coefficiens for the wind and swell parts of the Doppler spectrum. However, not clear if these coefficients are universal as this is under verification at this time. 
 
-Code Citation:  
+- Code Citation:  
 Douglas, Cahl, Voulgaris, George, & Alattabi, Zaid. (2019, March 15). Wave Radar Inversion Code (WaveRIC) (Version V1.0.0). Zenodo. http://doi.org/10.5281/zenodo.2594033  
-Method Citation:  
+- Method Citation:  
 Zaid Alattabi, Z., D. Cahl, and G. Voulgaris (2019). Swell and Wind Wave Inversion Using a Single Very High Frequency (VHF) Radar. Journal of Oceanic and Atmospheric Technology, XX: yyyy-yyyy  
 
 Copyright 2019(c) Zaid Alattabi, Douglas Cahl, George Voulgaris
@@ -20,13 +20,15 @@ You should have received a copy of the GNU General Public License along with thi
 
 The files are located in three directories  
 - WaveRIC  
-It contains the main functions used to run the inversion (ConfigRWIC.m, masterRadarWIC.m, RadarWIC.m); the html file RWIC_Contents.html contains inflormation about the functions included in the package.
+-It contains the main functions used to run the inversion (ConfigRWIC.m, masterRadarWIC.m, RadarWIC.m);  
+-file RWIC_Contents.html contains inflormation about the functions included in the package;  
+-master_testing.m is an example using the functions to recreate the spectra in the paper, figure 10;;
 - WaveRIC/lib  
 It contains a number of functions called by the main functions
 - WaveRIC/html  
 It contains explanations for each function in html files. These are called from RWIC_Contents.html  
 - WaveRIC/data  
-It contains data files for running examples from the Alattabi et al (2019) paper; Events A to H. It recreates Figure 11.
+It contains the data files used by master_testing.m for running examples from the Alattabi et al (2019) paper; Events A to H. It recreates Figure 11.
 
 List of Files  
 

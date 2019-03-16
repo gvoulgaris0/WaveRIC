@@ -18,6 +18,16 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program. If not, see https://www.gnu.org/licenses/.
 
+The files are located in three directories  
+- WaveRIC  
+It contains the main functions used to run the inversion (ConfigRWIC.m, masterRadarWIC.m, RadarWIC.m); the html file RWIC_Contents.html contains inflormation about the functions included in the package.
+- WaveRIC/lib  
+It contains a number of functions called by the main functions
+- WaveRIC/html  
+It contains explanations for each function in html files. These are called from RWIC_Contents.html  
+- WaveRIC/data  
+It contains data files for running examples from the Alattabi et al (2019) paper; Events A to H. It recreates Figure 11.
+
 List of Files  
 
 Main Functions:  
@@ -44,4 +54,4 @@ Library Functions (../lib):
   waveparams.m  
   weightf_barrick.m  
   wn2ndRWIC.m  
-  wspecRWIC.m, 
+  wspecRWIC.m

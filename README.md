@@ -1,4 +1,4 @@
-# WaveRIC
+# WaveRIC: Wave Radar Inversion Code
 Wave Radar Inversion Code (WaveRIC)  
 (see Alattabi, Cahl and Voulgaris (2019), JATECH)  
 

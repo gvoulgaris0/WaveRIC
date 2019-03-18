@@ -2,7 +2,7 @@
 %  Function to calculate the swell peak frequency (fswell), and
 %  swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)
 %%
-function [fswell,Eswell,Rswell] = invSwellRWIC(freq,PXY,fc,swplot)
+function [fswell,Eswell,Rswell] = findSwellRWIC(freq,PXY,fc,swplot)
 %% [fswell,Eswell,Rswell] = invSwellRWIC(freq,fradar,PXY,swplot)
 % 
 % This function calculates the swell peak frequency (fswell), and

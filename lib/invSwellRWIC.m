@@ -1,4 +1,4 @@
-%% invSwellRWIC.m (calls internal: swellpeak.m)
+%% findSwellRWIC.m (calls internal: swellpeak.m)
 %  Function to calculate the swell peak frequency (fswell), and
 %  swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)
 %%

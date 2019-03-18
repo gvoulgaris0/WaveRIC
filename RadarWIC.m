@@ -94,7 +94,7 @@ if swplot > 0
 end
 
 % Swell analysis and inversion
-[fs,Es]        = invSwellRWIC(freq,PXY,fc,swplot);
+[fs,Es]        = findSwellRWIC(freq,PXY,fc,swplot);
 [Sfs,Hss]      = specSwellRWIC(f,fs,Es,as,sigma);
 Sfs(isnan(Sfs))= 0;
 ths            = [];

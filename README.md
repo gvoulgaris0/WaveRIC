@@ -28,7 +28,7 @@ It contains a number of functions called by the main functions
 - WaveRIC/html  
 It contains explanations for each function in html files. These are called from RWIC_Contents.html  
 - WaveRIC/data  
-It contains the data files used by master_testing.m for running examples from the Alattabi et al (2019) paper; Events A to H. It recreates Figure 11.
+It contains the data files used by master_testing.m for running examples from the Alattabi et al (2019) paper; Events A to H. It recreates Figure 11 in the paper.
 
 List of Files  
 

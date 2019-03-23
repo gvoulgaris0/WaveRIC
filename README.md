@@ -42,9 +42,9 @@ Library Functions (../lib):
 
   Bragg_peak.m  
   ConditionDopRWIC.m  
+  findSwellRWIC.m
   Gauss_fit.m  
   hfr_noise.m  
-  findSwellRWIC.m  
   plot_swell.m  
   plot_wind.m  
   PXYint.m  

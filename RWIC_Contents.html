@@ -64,7 +64,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
   </style></head>
   
   <body>
-  <div class="content"><h1><b>Radar Wave Inversion Code (RWIC)</b></h1>
+  <div class="content"><h1><b>Radar Wave Inversion Code (RadarWIC or RWIC)</b></h1>
   
   <!--introduction-->
   <p>This is the code described in Alattabi et al. (2019) for the inversion of the 2nd-order of a Doppler spectrum from an HF/VHF radar system. This is a hybrid, empirical radar wave inversion technique that treats swell and wind waves separately. Prior to the inversion, the 2nd order spectrum is normalized using Barrick’s (1977b) weighting function as this removes harmonic and corner reflection peaks from the inversion and improves the results. Alattabi et al. (2019) presented calibrations coefficiens for the wind and swell parts of the Doppler spectrum. However, not clear if these coefficients are universal as this is under verification at this time.</p>
@@ -93,9 +93,9 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 <ul>
 <li><a href="../RadarWIC/lib/html/Bragg_peak.html">Bragg_peak.m</a></li>
 <li><a href="../RadarWIC/lib/html/ConditionDopRWIC.html">ConditionDopRWIC.m</a></li>
+<li><a href="../RadarWIC/lib/html/findSwellRWIC.html">invSwellRWIC.m</a></li>
 <li><a href="../RadarWIC/lib/html/Gauss_fit.html">Gauss_fit.m</a></li>
 <li><a href="../RadarWIC/lib/html/hfr_noise.html">hfr_noise.m</a></li>
-<li><a href="../RadarWIC/lib/html/invSwellRWIC.html">invSwellRWIC.m</a></li>
 <li><a href="../RadarWIC/lib/html/invWindRWIC.html">invWindRWIC.m</a></li>
 <li><a href="../RadarWIC/lib/html/plot_swell.html">plot_swell.m</a></li>
 <li><a href="../RadarWIC/lib/html/plot_wind.html">plot_wind.m</a></li>
@@ -111,84 +111,4 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 </ul>
 </li>
 </ul>
-
-</div><pre class="codeinput">
-<span class="keyword">function</span> [fswell,Eswell,Rswell] = invSwellRWIC(freq,PXY,swplot)
-</pre>
-<h2 id="2">[fswell,Eswell,Rswell] = invSwellRWIC(freq,fradar,PXY,swplot)</h2>
-<p>This function calculates the swell peak frequency (fswell), and swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)</p>
-<h2 id="3">Input</h2>
-<pre>  freq        - Array of Doppler Spectral frequency in Hz
-  fradar      - Radar operating frequency (in MHz)
-  PXY(1:freq) - Array of Spectral Energy (in dB), do not send arrays of NaN
-  swplot      - &gt;0 if you want a plot [optional, default no plot]</pre>
-  <h2 id="4">Output</h2>
-  <pre>  fswell      - Swell frequency (Hz)
-  Eswell      - Normalized by 1st order peak Doppler energy (at swell range)(Hz^-1)
-  Rswell      - Normalized by 1st order integrated Doppler energy (at swell range) (no units)</pre>
-  <h2 id="5">Uses</h2>
-  <p>ConditionDopRWIC.m, swell_peak.m</p>
-  <pre class="codeinput">
-  <span class="keyword">if</span> nargin&lt;3
-    swplot=-10;
-<span class="keyword">end</span>
-<span class="comment">% call common functions, Noise identification, Bragg peak identification,</span>
-<span class="comment">% etc. See inside function for more information.</span>
-ConditionDopRWIC;
-<span class="comment">% Swell - peak identification</span>
-<span class="comment">% for peaks 1 -4 from lowest f to highest, so 1 is negative outside</span>
-<span class="comment">% swell peak, and 4 is positive outside swell peak</span>
-<span class="comment">% 1 = m1(m) = -1, m2(m') = -1</span>
-<span class="comment">% 2 = m1(m) = -1, m2(m') = 1</span>
-<span class="comment">% 3 = m1(m) = 1, m2(m') = -1</span>
-<span class="comment">% 4 = m1(m) = 1, m2(m') = 1</span>
-<span class="comment">% this notation is followed here for f1-4, E1-4 and S1-4 where</span>
-<span class="comment">% f1 is swell peak freq, E1 is energy at this frequency</span>
-<span class="comment">% and S1 is the integral of this swell peak energy (Wang/Lipa)</span>
-[f1,E1,S1,si1] = swell_peak(freq,PXY,fn-swellf,fn-Lowfn ); <span class="comment">% 2nd order to the left (l) of Neg 1st</span>
-[f2,E2,S2,si2] = swell_peak(freq,PXY,fn+Lowfn ,fn+swellf); <span class="comment">% 2nd order to the right (r) of Neg 1st</span>
-[f3,E3,S3,si3] = swell_peak(freq,PXY,fp-swellf,fp-Lowfp ); <span class="comment">% 2nd order to the left (l) of Pos 1st</span>
-[f4,E4,S4,si4] = swell_peak(freq,PXY,fp+Lowfp ,fp+swellf); <span class="comment">% 2nd order to the right (r) of Pos 1st</span>
-
-<span class="comment">% plot</span>
-<span class="keyword">if</span> swplot&gt;0
-    plot_swell;
-<span class="keyword">end</span>
-dfn = f2-f1; <span class="comment">% difference between negative swell peaks, using ^4 Sf weighting (Zaid method)</span>
-dfp = f4-f3; <span class="comment">% difference between positive swell peaks</span>
-
-<span class="comment">% Swell - as in Alattabi et al 2019</span>
-<span class="comment">% fswell (Hz) swell frequency</span>
-<span class="comment">% Eswell (Hz^-1) Peak energy ratio to integrated Bragg peak</span>
-<span class="comment">% Rswell (no units) integral of swell peak ratio to integrated Bragg peak)</span>
-
-<span class="keyword">if</span> ~isnan(dfn) &amp;&amp; ~isnan(dfp)
-    <span class="keyword">if</span> dom == 1  &amp;&amp;  S1P &lt; S1N/10^(peak_diff_db/10)     <span class="comment">% N peak</span>
-        fswell = dfn/2;
-        Eswell = (E1 + E2) / S1N;
-        Rswell = (S1 + S2) / S1N;
-    <span class="keyword">elseif</span> dom == 1  &amp;&amp;  S1P &gt; S1N*10^(peak_diff_db/10)    <span class="comment">% P Peak</span>
-        fswell = dfp/2;
-        Eswell = (E3 + E4) / S1P;
-        Rswell = (S3 + S4) / S1P;
-    <span class="keyword">else</span> <span class="comment">% within peak_diff_db of Peak or dom = 0</span>
-        fswell = (dfp+dfn)/4;
-        Eswell = (E1+E2+E3+E4) / (S1P + S1N);
-        Rswell = (S1+S2+S3+S4) / (S1P + S1N);
-    <span class="keyword">end</span>
-<span class="keyword">end</span>
-
-<span class="keyword">if</span> isnan(dfn) &amp;&amp; ~isnan(dfp)
-        fswell = dfp/2;
-        Eswell = (E3 + E4) / S1P;
-        Rswell = (S3 + S4) / S1P;
-<span class="keyword">end</span>
-
-<span class="keyword">if</span> isnan(dfp) &amp;&amp; ~isnan(dfn)
-        fswell = dfn/2;
-        Eswell = (E1 + E2) / S1N;
-        Rswell = (S1 + S2) / S1N;
-<span class="keyword">end</span>
-</pre>
-##### SOURCE END #####
---></body></html>
+</body></html>

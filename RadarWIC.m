@@ -51,7 +51,7 @@ function [f,Sfw,thw,Sfs,Sfh] = RadarWIC(freq,PXY,fr,aw,as,sigma,fc,jswaproll,swp
 %   Sfh        - Total energy spectral density (S(f)=Sw(f)+Ss(f))
 %
 %% Uses
-%   dopWind.m; invSwellRWIC.m; invWind.m; specSwellRWIC.m; wspecRWIC.m
+%   dopWind.m; findSwellRWIC.m; invWind.m; specSwellRWIC.m; wspecRWIC.m
 %   ConfingRWIC.m
 % 
 %

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>hfr_noise.m</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-17"><meta name="DC.source" content="hfr_noise.m"><style type="text/css">
+      --><title>hfr_noise.m</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-10"><meta name="DC.source" content="hfr_noise.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -80,7 +80,8 @@ ptest(~i) = nan;
 [~,pm]=max(ptest); <span class="comment">% peak with max energy near Bragg peaks (within maxv)</span>
 
 PM = pm-2 : pm+2;  <span class="comment">% using 2 points on either side</span>
-fpeak = sum(PXY(PM).*freq(PM)) / sum(PXY(PM)); <span class="comment">% SNR weighted average frequency</span>
+PXYlin = 10.^(PXY./10);
+fpeak = sum(PXYlin(PM).*freq(PM)) / sum(PXYlin(PM)); <span class="comment">% SNR weighted average frequency</span>
 </pre><h2 id="8">Objective Spectral Noise; estimated for the smaller Bragg peak side of the spectrum</h2><pre class="codeinput"><span class="keyword">if</span> isnan(fpeak)
     Noise=nan;
     <span class="keyword">return</span>
@@ -88,20 +89,22 @@ fpeak = sum(PXY(PM).*freq(PM)) / sum(PXY(PM)); <span class="comment">% SNR weigh
     <span class="keyword">if</span> freq(PM)&lt;0    <span class="comment">% negative peak</span>
         fn = fpeak;
         fp = fn+2*fbragg;
-        <span class="keyword">if</span> max(freq) &lt; 2*fp <span class="comment">% check the peak isn't too close to the edge</span>
-            Noise = nan;
-            <span class="keyword">return</span>
+        <span class="keyword">if</span> max(freq) &lt; 1.5*fp <span class="comment">% check the peak isn't too close to the edge</span>
+            error(<span class="string">'Cannot determine Noise level in Doppler spectrum'</span>)
+<span class="comment">%             Noise = nan;</span>
+<span class="comment">%             return</span>
         <span class="keyword">else</span>
-            [Noise,~,~,~,~]= spectral_noise(PXY(freq&gt;2*fp),1);
+            [Noise,~,~,~,~]= spectral_noise(PXY(freq&gt;1.5*fp),1);
         <span class="keyword">end</span>
     <span class="keyword">else</span>             <span class="comment">% positive peak</span>
         fp = fpeak;
         fn = fp-2*fbragg;
-        <span class="keyword">if</span> min(freq) &gt; 2*fn <span class="comment">% check the peak isn't too close to the edge</span>
-            Noise = nan;
-            <span class="keyword">return</span>
+        <span class="keyword">if</span> min(freq) &gt; 1.5*fn <span class="comment">% check the peak isn't too close to the edge</span>
+            error(<span class="string">'Cannot determine Noise level in Doppler spectrum'</span>)
+<span class="comment">%             Noise = nan;</span>
+<span class="comment">%             return</span>
         <span class="keyword">else</span>
-            [Noise,~,~,~,~]= spectral_noise(PXY(freq&lt;2*fn),1);
+            [Noise,~,~,~,~]= spectral_noise(PXY(freq&lt;1.5*fn),1);
         <span class="keyword">end</span>
     <span class="keyword">end</span>
 <span class="keyword">end</span>
@@ -160,7 +163,8 @@ ptest(~i) = nan;
 [~,pm]=max(ptest); % peak with max energy near Bragg peaks (within maxv)
 
 PM = pm-2 : pm+2;  % using 2 points on either side
-fpeak = sum(PXY(PM).*freq(PM)) / sum(PXY(PM)); % SNR weighted average frequency
+PXYlin = 10.^(PXY./10);
+fpeak = sum(PXYlin(PM).*freq(PM)) / sum(PXYlin(PM)); % SNR weighted average frequency
 
 %% Objective Spectral Noise; estimated for the smaller Bragg peak side of the spectrum
 if isnan(fpeak)
@@ -170,20 +174,22 @@ else
     if freq(PM)<0    % negative peak
         fn = fpeak;
         fp = fn+2*fbragg;
-        if max(freq) < 2*fp % check the peak isn't too close to the edge
-            Noise = nan;
-            return
+        if max(freq) < 1.5*fp % check the peak isn't too close to the edge
+            error('Cannot determine Noise level in Doppler spectrum')
+%             Noise = nan; 
+%             return
         else
-            [Noise,~,~,~,~]= spectral_noise(PXY(freq>2*fp),1);
+            [Noise,~,~,~,~]= spectral_noise(PXY(freq>1.5*fp),1);
         end
     else             % positive peak
         fp = fpeak;
         fn = fp-2*fbragg;
-        if min(freq) > 2*fn % check the peak isn't too close to the edge
-            Noise = nan;
-            return
+        if min(freq) > 1.5*fn % check the peak isn't too close to the edge
+            error('Cannot determine Noise level in Doppler spectrum')
+%             Noise = nan;
+%             return
         else
-            [Noise,~,~,~,~]= spectral_noise(PXY(freq<2*fn),1);
+            [Noise,~,~,~,~]= spectral_noise(PXY(freq<1.5*fn),1);
         end
     end
 end

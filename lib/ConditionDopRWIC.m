@@ -7,7 +7,7 @@
 %   4. Applies a Gaussian curve fitting to the Bragg peaks
 %      (used for Bragg peak integration and 2nd order sideband low frequency limits)
 %   5. Integrates Bragg peaks using the Gaussian halfwidth from fit
-%
+%%
 %% Uses
 %    ConfigRWIC.m, hfr_noise.m, Bragg_peak.m, Gauss_fit.m, PXYint.m
 %
@@ -37,13 +37,13 @@ ConfigRWIC;
 [Noisedb,fp,fn] = hfr_noise(freq,PXY,fbragg,maxdf);
 
 %% Convert from dB to linear units
-PXY   = 10.^(0.1*PXY);
-Noise = 10.^(0.1*Noisedb);
+PXY    = 10.^(0.1*PXY);
+Noise  = 10.^(0.1*Noisedb);
 PXY_or = PXY;                       % Used for plotting purposes
 
 %% Remove noise and set negative values (if any) to zero
-PXY       = PXY-Noise;
-PXY(PXY<0)= 1e-10;
+PXY        = PXY-Noise;
+PXY(PXY<0) = (1.381e-23)*300; % noise temperature at 300K (27C,80f), -203.8269 dBW/Hz
 
 %% 2nd estimate of Bragg peak locations (in Hz) from de-noised Doppler spectra.
 [fn,in] = Bragg_peak(freq,PXY,np,fn-maxdf/2,fn+maxdf/2 );  % negative peak
@@ -60,32 +60,30 @@ end
 if ~isreal(sigman)
     sigman = df*(np-1); % defaults back to np
 end
-
-%% Identification of 1st order regions
+%
+%% ---------------- identification of 1st order regions ------------------
 % It checks to make sure that the width of 1st order peak as estimated by the
 % Gaussian fit is not too wide or too narrow (in case of a double peak being
 % present).
 %
 % Check for the negative 1st order Bragg peak
-hfn = 0.5*2.355*sigman;          % halfwidth of Bragg peak (from Gaussian, in Hz)
-hfn = hfn + df;                  % add an extra bin on the end to make sure we capture all points within the halfwidth
-hfn = min(hfn,Lowf);             % in case of a poor Gaussian fit (too wide), hf  = Lowf
-hfn = max(hfn,minf/2);           % in case too narrow
+hfn    = 0.5*2.355*sigman;       % halfwidth of Bragg peak (from Gaussian, in Hz)
+hfn    = hfn + df;               % add an extra bin on the end to make sure we capture all points within the halfwidth
+hfn    = min(hfn,Lowf);          % in case of a poor Gaussian fit (too wide), hf  = Lowf
+hfn    = max(hfn,minf/2);        % in case too narrow
 Lowfn  = min(2.355*sigman,Lowf); % lowest swell freq.  - check to make sure its' not too wide
 Lowfn  = max(Lowfn,minf);        % check to make sure it's not too narrow
 Lowfns = max(Lowfn,minfs);       % check to make sure it's not too narrow
-%
+
 % Check for the positive 1st order Bragg peak
-%
-hfp    = 0.5*2.355*sigmap;
-hfp    = hfp + df;
-hfp    = min(hfp,Lowf);
-hfp    = max(hfp,minf/2);
-Lowfp  = min(2.355*sigmap,Lowf);
-Lowfp  = max(Lowfp,minf);
+hfp = 0.5*2.355*sigmap;
+hfp = hfp + df;
+hfp = min(hfp,Lowf);
+hfp = max(hfp,minf/2);
+Lowfp = min(2.355*sigmap,Lowf);
+Lowfp = max(Lowfp,minf);
 Lowfps = max(Lowfp,minfs);
-%
+
 % Estimate the Bragg peak integrals
-%
 [S1N,S1Npeak,S1n] = PXYint(freq,PXY,fn-hfn,fn+hfn);
 [S1P,S1Ppeak,S1p] = PXYint(freq,PXY,fp-hfp,fp+hfp);

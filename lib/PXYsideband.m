@@ -71,10 +71,12 @@ if switc1 ~= 999
     fwmin = min(fw1);       % local min closest to Bragg peak (lowest wave frequency)
     
     % keep only sideband above local minimum
-    j  = fw >= fwmin;
-    fw = fw(j);
-    E  = E(j);      % unweighted second order energy
-    f  = f(j);
+    if ~isempty(fwmin) 
+        j  = fw >= fwmin;
+        fw = fw(j);
+        E  = E(j);      % unweighted second order energy
+        f  = f(j);
+    end
 end
 
 % check for inner or outer sidebands
@@ -87,5 +89,6 @@ end
 % Deep-water weighting function
 W  = weightf_barrick(fbragg,fw,Wn); % Barrick weighting function
 Ew = E./W;      % Weighted second order energy
+
 end
 

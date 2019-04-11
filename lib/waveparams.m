@@ -64,10 +64,9 @@ end
 
 % peak energy
 [~,i] = max(Sf);
-j = max(i-2,1):min(i+2,length(Sf));
-f = f(j); f = f(:);
-Sf = Sf(j); Sf = Sf(:);
-
+j   = max(i-2,1):min(i+2,length(Sf));
+f   = f(j); f = f(:);
+Sf  = Sf(j); Sf = Sf(:);
 n   = 4;                         % 4th order weighting
 fp  = sum(f.*Sf.^n)/sum(Sf.^n);  % peak frequency identofication
 if nargin > 2
@@ -79,32 +78,3 @@ else
     bulk = [hs,fp,fm th th];
 end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -6,9 +6,9 @@ function [R,Rw,fw,D,Dw,debug] = wn2ndRWIC(freq,PXY,swplot)
 %% [R,Rw,fw,D,Dw,debug] = wn2ndRWIC(freq,PXY,[swplot])
 %
 % This function calculates the 2nd order Doppler part to be used for the wave 
-% inversion. This is normalized by the 1st order energy and is weighted (Rw) or
-% non-weighted (R) using Barrick's weighting function. It also estimates the 
-% corresponding wave frequencies (fw).
+% inversion. This is normalized by the 1st order energy and Rw is weighted using 
+% Barrick's weighting function, while R is non-weighted.  It also estimates the 
+% corresponding wave frequencies (fw) for each Rw and R estimate.
 %
 %% Input
 %  freq:        Array of Doppler frequencies for the Doppler spectrum (in Hz)
@@ -16,12 +16,12 @@ function [R,Rw,fw,D,Dw,debug] = wn2ndRWIC(freq,PXY,swplot)
 %  swplot:      >0 if you want a plot [optional, default no plot]
 %
 %% Output
-%  fw:       Ocean wave frequencies (in Hz)
+%  fw:        Ocean wave frequencies (in Hz)
 %  R:        (no units) normalized (no weighted) 2nd order sideband
 %  Rw:       (no units) weighted (by Barrick's weighting function)and normalized 2nd order sideband
-%  D         (no units) Ratio of normalized 2nd order sidebands around a peak [(R_right_of_peak)/(R_left_of_peak)]
-%  Dw        (no units) Ratio of normalized & weighted 2nd order sideband around a peak [(Rw_right_of_peak)/(Rw_left_of_peak)]
-%  debug     Structure variable to be used for debugging purposes
+%  D:        (no units) Ratio of normalized 2nd order sidebands around a peak [(R_right_of_peak)/(R_left_of_peak)]
+%  Dw:       (no units) Ratio of normalized & weighted 2nd order sideband around a peak [(Rw_right_of_peak)/(Rw_left_of_peak)]
+%  debug:    Structure variable to be used for debugging purposes
 %
 %% Debugging  
 %  Extra data to be used for debugging purposes for each sideband.
@@ -34,11 +34,12 @@ function [R,Rw,fw,D,Dw,debug] = wn2ndRWIC(freq,PXY,swplot)
 %                     3 and 4 positive frequencies
 %                     1 and 3 left of the adjacent Bragg peak
 %                     2 and 4 right of the adjacent Bragg peak
-%   debug.SNR1   signal to noise ratio for 1st order
-%   debug.SNR2   signal to noise ratio for 2nd order
-%   debug.sigma1 width of Bragg peak
-%   debug.Noise  Noise level
-%   debug.S11    ratio of std of Bargg peak region (to get wind direction/local wind wave direction)
+%  debug.SNR1   signal to noise ratio for 1st order
+%  debug.SNR2   signal to noise ratio for 2nd order
+%  debug.sigma1 width of Bragg peak
+%  debug.Noise  Noise level
+%  debug.S11    ratio of std of Bragg peak region (to get wind direction/local wind wave direction)
+%  debug.braggpeaksSNR Bragg peak SNR for positive and negative side peaks
 %
 %% Uses
 %  ConditionDopRWIC.m, PXYsideband.m
@@ -64,6 +65,8 @@ function [R,Rw,fw,D,Dw,debug] = wn2ndRWIC(freq,PXY,swplot)
 % call dop_common that pre-treates the Doppler spectrum (i.e., Noise identification,
 % Bragg peak identification etc. See inside dop_common function for more information.
 ConditionDopRWIC;    % Loading parameters
+double_outer = 1;    % flag to indicate uneven wave freq. ranges from inner and outer sidebands and account for it. 
+
 %
 if nargin<3
     swplot=-10;
@@ -86,31 +89,64 @@ debug.E1  = E1;      debug.E2  = E2;      debug.E3  = E3;      debug.E4  = E4;
 debug.R1  = E1/S1N;  debug.R2  = E2/S1N;  debug.R3  = E3/S1P;  debug.R4  = E4/S1P;
 debug.Rw1 = Ew1/S1N; debug.Rw2 = Ew2/S1N; debug.Rw3 = Ew3/S1P; debug.Rw4 = Ew4/S1P;
 debug.fw1 = fw1;     debug.fw2 = fw2;     debug.fw3 = fw3;     debug.fw4 = fw4;
-debug.Noise=Noise;   debug.S11  = [S1n S1p];
+debug.Noise = Noise; debug.S11 = [S1n S1p];
+debug.braggpeaksSNR = [S1Npeak S1Ppeak]./Noise;
 
 if (dom == 1  && S1P < S1N) || (dom ~=1 && S1P < S1N/10^(peak_diff_db/10)) % Negative Bragg peak is dominant
+    % do not cross flim (default 0 Hz) for inner sideband
+    E2(fi2 > -flim) = 0;    % negative peak inner sideband limit
+    Ew2(fi2 > -flim) = 0;   % inner weighted
+         
     E2  = interp1(fw2,E2 ,fw1,'linear');        % extrap frequencies to match each side of Bragg peak (inner to outer)
     Ew2 = interp1(fw2,Ew2,fw1,'linear');
+    
+    % do not cross flim (default 0 Hz) for inner sideband
+    iw2 = find(fi2 > -flim,1) - 1;
+    if iw2 > 1
+        fw2lim = fw2(iw2);        % last wave frequency below flim in inner sideband
+        if ~isempty(fw2lim)
+             if double_outer == 1 % optional doubling of outer sideband above this limit
+                E1(fw1 > fw2lim) = 2*E1(fw1 > fw2lim);   % outer
+                Ew1(fw1 > fw2lim) = 2*Ew1(fw1 > fw2lim); % outer weighted
+            end
+        end
+    end
     
     R  = (E1+E2)   / S1N; % unweighted second order ratio
     Rw = (Ew1+Ew2) / S1N; % ratio with Barrick wind-wave weighting
     fw = fw1;
-    D = E1./E2;     % unweighted 2nd order sideband direction ratio (positive sideband / negative sideband)
-    Dw = Ew1./Ew2;  % weighted 2nd order sideband direction ratio
+    D  = E1./E2;     % unweighted 2nd order sideband direction ratio (positive sideband / negative sideband)
+    Dw = Ew1./Ew2;   % weighted 2nd order sideband direction ratio
     
     debug.SNR2   = max(Ew1+Ew2)/2;
     debug.SNR1   = max(max(S1Npeak));
     debug.sigma1 = sigman;
     
 elseif (dom == 1  &&  S1N < S1P) || (dom~=1 && S1N < S1P/10^(peak_diff_db/10)) % Positive Bragg peak is dominant
+    % do not cross flim (default 0 Hz) for inner sideband - set values to 0
+    E3(fi3 < flim) = 0;    % negative peak inner sideband limit
+    Ew3(fi3 < flim) = 0;   % inner weighted
+    
     E3  = interp1(fw3,E3 ,fw4,'linear'); % extrap frequencies to match each side of Bragg peak (inner to outer)
     Ew3 = interp1(fw3,Ew3,fw4,'linear');
+    
+    % last wave frequency below flim in inner sideband
+    iw3 = min(find(fi3 < flim,1,'last') + 1,length(fi3));
+    if iw3 > 1
+        fw3lim = fw3(iw3);
+        if ~isempty(fw3lim)
+            if double_outer == 1 % optional doubling of outer sideband above this limit
+                E4(fw4 > fw3lim) = 2*E4(fw4 > fw3lim);  % outer
+                Ew4(fw4 > fw3lim)= 2*Ew4(fw4 > fw3lim); % outer weighted
+            end
+        end
+    end
     
     R  = (E3+E4)   / S1P; % unweighted second order ratio
     Rw = (Ew3+Ew4) / S1P; % ratio with Barrick wind-wave weighting
     fw = fw4;
-    D = E3./E4;     % unweighted 2nd order sideband direction ratio (positive sideband / negative sideband)
-    Dw = Ew3./Ew4;  % weighted 2nd order sideband direction ratio
+    D  = E3./E4;         % unweighted 2nd order sideband direction ratio (positive sideband / negative sideband)
+    Dw = Ew3./Ew4;       % weighted 2nd order sideband direction ratio
     
     debug.SNR2   = max(Ew3+Ew4)/2;
     debug.SNR1   = max(max(S1Ppeak));
@@ -127,8 +163,8 @@ else % within peak_diff_db of Peak or dom = 0
     R  = (E1+E2+E3+E4)/(S1P+S1N);      % unweighted normalised 2nd second order
     Rw = (Ew1+Ew2+Ew3+Ew4)/(S1P+S1N);  % Barrick wind-wave weighted and normalised 2nd order
     fw = fw4;    
-    D  = (E1+E3)./(E2+E4);       % unweighted normalised 2nd second order
-    Dw = (Ew1+Ew3)./(Ew2+Ew4);   % Barrick wind-wave weighted and normalised 2nd order
+    D  = (E1+E3)./(E2+E4);             % unweighted normalised 2nd second order
+    Dw = (Ew1+Ew3)./(Ew2+Ew4);         % Barrick wind-wave weighted and normalised 2nd order
     
     debug.SNR2   = max(Ew1+Ew2+Ew4)/4;
     debug.SNR1   = max(S1Npeak+S1Ppeak)/2;
@@ -140,35 +176,21 @@ if fw(2) < fw(1)
     R  = flip(R);
     Rw = flip(Rw);
 end
-
+%
 % extend to 0 Hz
 dfw = fw(2) - fw(1);
-fw = fw(end):-dfw:0;
-fw = fliplr(fw)';
-k = length(fw) - length(Rw); 
-Rw0 = zeros(k,1);
-Rw = [Rw0 ; Rw];
-R = [Rw0 ; R];
-
+fw  = fw(end):-dfw:0;
+fw  = fliplr(fw)';
+k   = length(fw) - length(Rw); 
+Rw0 = nan(k,1);
+Rw  = [Rw0 ; Rw];
+R   = [Rw0 ; R];
 Dnan = nan(k,1);
-D = [Dnan ; D];
-Dw = [Dnan ; Dw];
-
+D    = [Dnan ; D];
+Dw   = [Dnan ; Dw];
+%
 %plot
 if swplot>0
     plot_wind;  
 end % end of plot
 end % end of main function
-
-
-
-
-
-
-
-
-
-
-
-
-

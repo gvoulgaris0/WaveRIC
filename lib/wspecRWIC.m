@@ -1,6 +1,7 @@
 %% wspecRWIC.m
 %  Function to combine the inverted swell and wind wave spectra to a single
 %  wave spectrum. S(f) = Sw(f)+Ss(f)
+%%
 function [Sfw,Sfs,Sf,th] = wspecRWIC(f,Rw,Sf_wind,Sf_swell,fc,thw,ths,jswaproll)
 %% [Sfw,Sfs,Sf,th] = wspecRWIC(f,Rw,Sf_wind,Sf_swell,fc,thw,ths,jswaproll)
 %
@@ -61,7 +62,7 @@ Rwind = nansum(Rw(j));
 j = f <= fc; % select swell wave frequencies
 Rswell= nansum(Rw(j));
 Ratio = Rswell/Rwind;
-disp(Ratio)
+disp(['Ratio = ' num2str(Ratio)])
 % choose right method
 if Ratio > 1 % Swell dominated conditions for deep waters (in the paper = 1.0)
     j = find(Sf_swell > Sf_wind,2,'last');
@@ -79,8 +80,8 @@ if Ratio > 1 % Swell dominated conditions for deep waters (in the paper = 1.0)
             Sf_wind(1:j) = 0;
         end
         Sf_swell(j+1:end) = 0;
-        % hyrbid
-        Sf  = Sf_swell + Sf_wind;  % Combine both spectra
+        
+        Sf  = Sf_swell + Sf_wind;  % Combine both spectra (Hybrid)
     end
     % Wave direction
     th = thw;

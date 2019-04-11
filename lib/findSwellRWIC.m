@@ -1,4 +1,4 @@
-%% findSwellRWIC.m (calls internal: swellpeak.m)
+%% findSwellRWIC.m (calls internal function: swellpeak.m)
 %  Function to calculate the swell peak frequency (fswell), and
 %  swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)
 %%
@@ -44,8 +44,7 @@ function [fswell,Eswell,Rswell] = findSwellRWIC(freq,PXY,fc,swplot)
 if nargin<4
     swplot=-10;
 end
-%% call common functions
-% Noise identification, Bragg peak identification,
+% call common functions, Noise identification, Bragg peak identification,
 % etc. See inside function for more information.
 ConditionDopRWIC;
 %% Swell - peak identification
@@ -108,6 +107,7 @@ end % end of main function
 %% Internal function: swell_peak.m
 %  It is used to find the location of the swell peak
 function [fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)
+%
 %% [fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)
 %
 % Function to find the location of the swell peak (fp) using a 4th order
@@ -148,9 +148,14 @@ function [fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)
 np = 2; % Use 2 points on each side for centroid frequency and integral
 
 i = find(freq >= f_low  &  freq <= f_high); % find indices of swell region
-f = freq(i(1):i(end) + np);    % Actual freqs
-
-S = PXY((i(1):i(end) + np));   % Power in swell region
+if isempty(i)
+    fp = nan;
+    Ep = nan;
+    Sp = nan;
+    return
+end
+f = freq(i(1):i(end) + np);     % Actual freqs
+S = PXY((i(1):i(end) + np));    % Power in swell region
 %-------------------------------------------------------------------------
 if length (S)<3
     locs = [];

@@ -1,0 +1,354 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>findSwellRWIC.m (calls internal function: swellpeak.m)</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-10"><meta name="DC.source" content="findSwellRWIC.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>findSwellRWIC.m (calls internal function: swellpeak.m)</h1><!--introduction--><pre>Function to calculate the swell peak frequency (fswell), and
+swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)</pre><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">[fswell,Eswell,Rswell] = findSwellRWIC(freq,fradar,PXY,swplot)</a></li><li><a href="#3">Input</a></li><li><a href="#4">Output</a></li><li><a href="#5">Uses</a></li><li><a href="#6">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</a></li><li><a href="#8">Swell - peak identification</a></li><li><a href="#9">Swell - as in Alattabi et al 2019</a></li><li><a href="#11">Internal function: swell_peak.m</a></li><li><a href="#13">[fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)</a></li><li><a href="#14">Input</a></li><li><a href="#15">Output</a></li><li><a href="#16">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> [fswell,Eswell,Rswell] = findSwellRWIC(freq,PXY,fc,swplot)
+</pre><h2 id="2">[fswell,Eswell,Rswell] = findSwellRWIC(freq,fradar,PXY,swplot)</h2><p>This function calculates the swell peak frequency (fswell), and swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)</p><h2 id="3">Input</h2><pre>  freq        - Array of Doppler Spectral frequency in Hz
+  fradar      - Radar operating frequency (in MHz)
+  PXY(1:freq) - Array of Spectral Energy (in dB), do not send arrays of NaN
+  fc          - Don't find swell peaks above this frequency (Hz), usually the same as fc
+  swplot      - &gt;0 if you want a plot [optional, default no plot]</pre><h2 id="4">Output</h2><pre>  fswell      - Swell frequency (Hz)
+  Eswell      - Normalized by 1st order peak Doppler energy (at swell range)(Hz^-1)
+  Rswell      - Normalized by 1st order integrated Doppler energy (at swell range) (no units)</pre><h2 id="5">Uses</h2><p>ConditionDopRWIC.m, swell_peak.m, trapz.m</p><h2 id="6">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</h2><p>This file is part of RadarWIC.</p><p>RadarWIC is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p><pre class="codeinput"><span class="keyword">if</span> nargin&lt;4
+    swplot=-10;
+<span class="keyword">end</span>
+<span class="comment">% call common functions, Noise identification, Bragg peak identification,</span>
+<span class="comment">% etc. See inside function for more information.</span>
+ConditionDopRWIC;
+</pre><h2 id="8">Swell - peak identification</h2><p>for peaks 1 -4 from lowest f to highest, so 1 is negative outside swell peak, and 4 is positive outside swell peak 1 = m1(m) = -1, m2(m') = -1 2 = m1(m) = -1, m2(m') = 1 3 = m1(m) = 1, m2(m') = -1 4 = m1(m) = 1, m2(m') = 1 this notation is followed here for f1-4, E1-4 and S1-4 where f1 is swell peak freq, E1 is energy at this frequency and S1 is the integral of this swell peak energy (Wang/Lipa)</p><pre class="codeinput">[f1,E1,S1,si1] = swell_peak(freq,PXY,fn-fc,fn-Lowfns ); <span class="comment">% 2nd order to the left (l) of Neg 1st</span>
+[f2,E2,S2,si2] = swell_peak(freq,PXY,fn+Lowfns ,fn+fc); <span class="comment">% 2nd order to the right (r) of Neg 1st</span>
+[f3,E3,S3,si3] = swell_peak(freq,PXY,fp-fc,fp-Lowfps ); <span class="comment">% 2nd order to the left (l) of Pos 1st</span>
+[f4,E4,S4,si4] = swell_peak(freq,PXY,fp+Lowfps ,fp+fc); <span class="comment">% 2nd order to the right (r) of Pos 1st</span>
+
+<span class="comment">% plot</span>
+<span class="keyword">if</span> swplot&gt;0
+    plot_swell;
+<span class="keyword">end</span>
+dfn = f2-f1; <span class="comment">% difference between negative swell peaks, using ^4 Sf weighting (Zaid method)</span>
+dfp = f4-f3; <span class="comment">% difference between positive swell peaks</span>
+</pre><h2 id="9">Swell - as in Alattabi et al 2019</h2><p>fswell (Hz) swell frequency Eswell (Hz^-1) Peak energy ratio to integrated Bragg peak Rswell (no units) integral of swell peak ratio to integrated Bragg peak)</p><pre class="codeinput"><span class="comment">% if ~isnan(dfn) &amp;&amp; ~isnan(dfp)</span>
+    <span class="keyword">if</span> dom == 1  &amp;&amp;  S1P &lt; S1N/10^(peak_diff_db/10)     <span class="comment">% Neg. side Peak</span>
+        fswell = dfn/2;
+        Eswell = (E1 + E2) / S1N;
+        Rswell = (S1 + S2) / S1N;
+    <span class="keyword">elseif</span> dom == 1  &amp;&amp;  S1P &gt; S1N*10^(peak_diff_db/10) <span class="comment">% Pos. side Peak</span>
+        fswell = dfp/2;
+        Eswell = (E3 + E4) / S1P;
+        Rswell = (S3 + S4) / S1P;
+    <span class="keyword">else</span>                   <span class="comment">% Use both Peaks (within peak_diff_db of Peak or dom = 0)</span>
+        fswell = (dfp+dfn)/4;
+        Eswell = (E1+E2+E3+E4) / (S1P + S1N);
+        Rswell = (S1+S2+S3+S4) / (S1P + S1N);
+    <span class="keyword">end</span>
+<span class="comment">% end</span>
+
+<span class="keyword">if</span> isnan(dfn) &amp;&amp; ~isnan(dfp)
+        fswell = dfp/2;
+        Eswell = (E3 + E4) / S1P;
+        Rswell = (S3 + S4) / S1P;
+<span class="keyword">end</span>
+
+<span class="keyword">if</span> isnan(dfp) &amp;&amp; ~isnan(dfn)
+        fswell = dfn/2;
+        Eswell = (E1 + E2) / S1N;
+        Rswell = (S1 + S2) / S1N;
+<span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span> <span class="comment">% end of main function</span>
+</pre><h2 id="11">Internal function: swell_peak.m</h2><pre>It is used to find the location of the swell peak</pre><pre class="codeinput"><span class="keyword">function</span> [fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)
+</pre><pre class="codeinput"><span class="comment">%</span>
+</pre><h2 id="13">[fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)</h2><p>Function to find the location of the swell peak (fp) using a 4th order SNR weighting. It looks for swell peaks in PXY within the range f_low - f_high. The largest peak that is a a weighted peak is identified. The integral of the swell peak over 5 points (2 points either side of the max) and the energy at the swell peak  frequency (Ep) is calculated.</p><h2 id="14">Input</h2><p>freq      - Doppler frequency in Hz of radar spectra PXY       - Doppler spectra in linear units f_low     - low freq. for swell region (f_low &lt; swell &lt;= f_high) f_high    - high freq. for swell region</p><h2 id="15">Output</h2><p>fp        - Swell peak frequency (in Hz) SNR^4 weighting with two points on each side of swell peak Ep        - Max Doppler enegy at swell frequency peak Sp        - Integrated Doppler energy over 5 points centered at the swell peak i         - Indices of the integration for E_wang</p><h2 id="16">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</h2><p>This file is part of RadarWIC.</p><p>RadarWIC is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p><pre class="codeinput">np = 2; <span class="comment">% Use 2 points on each side for centroid frequency and integral</span>
+
+i = find(freq &gt;= f_low  &amp;  freq &lt;= f_high); <span class="comment">% find indices of swell region</span>
+<span class="keyword">if</span> isempty(i)
+    fp = nan;
+    Ep = nan;
+    Sp = nan;
+    <span class="keyword">return</span>
+<span class="keyword">end</span>
+f = freq(i(1):i(end) + np);     <span class="comment">% Actual freqs</span>
+S = PXY((i(1):i(end) + np));    <span class="comment">% Power in swell region</span>
+<span class="comment">%-------------------------------------------------------------------------</span>
+<span class="keyword">if</span> length (S)&lt;3
+    locs = [];
+<span class="keyword">else</span>
+    [pks,locs] = findpeaks(S); <span class="comment">% make sure it's a local peak</span>
+<span class="keyword">end</span>
+<span class="keyword">if</span> isempty(locs)
+    fp = nan;
+    Ep = nan;
+    Sp = nan;
+    <span class="keyword">return</span>
+<span class="keyword">end</span>
+<span class="comment">%-------------------------------------------------------------------------</span>
+[~,loci] = max(pks);          <span class="comment">% biggest local peak</span>
+j = locs(loci);
+<span class="comment">%</span>
+jmin = max(1,j-np);
+jmax = min(length(S),j+np);
+j = jmin:jmax;
+f = f(j);
+S = S(j);
+f = f(:);
+S = S(:);
+<span class="comment">%</span>
+n = 4;                         <span class="comment">% 4th order weighting</span>
+fp = sum(f.*S.^n)/sum(S.^n);   <span class="comment">% ^n weighted frequency (SNR weighted) around peak</span>
+Sp = trapz(f,S);               <span class="comment">% integral</span>
+Ep = interp1(f,S,fp,<span class="string">'linear'</span>); <span class="comment">% Energy at swell peak frequency from ^n weighting (4th order)</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% findSwellRWIC.m (calls internal function: swellpeak.m)
+%  Function to calculate the swell peak frequency (fswell), and
+%  swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)
+%%
+function [fswell,Eswell,Rswell] = findSwellRWIC(freq,PXY,fc,swplot)
+%% [fswell,Eswell,Rswell] = findSwellRWIC(freq,fradar,PXY,swplot)
+% 
+% This function calculates the swell peak frequency (fswell), and
+% swell Doppler energy ratio (Eswell) and integrated energy ratio (Rswell)
+%
+%% Input
+%    freq        - Array of Doppler Spectral frequency in Hz
+%    fradar      - Radar operating frequency (in MHz)
+%    PXY(1:freq) - Array of Spectral Energy (in dB), do not send arrays of NaN
+%    fc          - Don't find swell peaks above this frequency (Hz), usually the same as fc
+%    swplot      - >0 if you want a plot [optional, default no plot]
+%
+%% Output
+%    fswell      - Swell frequency (Hz)
+%    Eswell      - Normalized by 1st order peak Doppler energy (at swell range)(Hz^-1)
+%    Rswell      - Normalized by 1st order integrated Doppler energy (at swell range) (no units)
+%
+%% Uses
+% ConditionDopRWIC.m, swell_peak.m, trapz.m
+%
+%% Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris
+%
+% This file is part of RadarWIC.
+%
+% RadarWIC is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
+%%
+if nargin<4
+    swplot=-10;
+end
+% call common functions, Noise identification, Bragg peak identification,
+% etc. See inside function for more information.
+ConditionDopRWIC;
+%% Swell - peak identification
+% for peaks 1 -4 from lowest f to highest, so 1 is negative outside
+% swell peak, and 4 is positive outside swell peak
+% 1 = m1(m) = -1, m2(m') = -1
+% 2 = m1(m) = -1, m2(m') = 1
+% 3 = m1(m) = 1, m2(m') = -1
+% 4 = m1(m) = 1, m2(m') = 1
+% this notation is followed here for f1-4, E1-4 and S1-4 where
+% f1 is swell peak freq, E1 is energy at this frequency
+% and S1 is the integral of this swell peak energy (Wang/Lipa)
+[f1,E1,S1,si1] = swell_peak(freq,PXY,fn-fc,fn-Lowfns ); % 2nd order to the left (l) of Neg 1st
+[f2,E2,S2,si2] = swell_peak(freq,PXY,fn+Lowfns ,fn+fc); % 2nd order to the right (r) of Neg 1st
+[f3,E3,S3,si3] = swell_peak(freq,PXY,fp-fc,fp-Lowfps ); % 2nd order to the left (l) of Pos 1st
+[f4,E4,S4,si4] = swell_peak(freq,PXY,fp+Lowfps ,fp+fc); % 2nd order to the right (r) of Pos 1st
+
+% plot
+if swplot>0
+    plot_swell;
+end
+dfn = f2-f1; % difference between negative swell peaks, using ^4 Sf weighting (Zaid method)
+dfp = f4-f3; % difference between positive swell peaks
+
+%% Swell - as in Alattabi et al 2019
+% fswell (Hz) swell frequency
+% Eswell (Hz^-1) Peak energy ratio to integrated Bragg peak
+% Rswell (no units) integral of swell peak ratio to integrated Bragg peak)
+
+% if ~isnan(dfn) && ~isnan(dfp)
+    if dom == 1  &&  S1P < S1N/10^(peak_diff_db/10)     % Neg. side Peak
+        fswell = dfn/2;
+        Eswell = (E1 + E2) / S1N;
+        Rswell = (S1 + S2) / S1N;
+    elseif dom == 1  &&  S1P > S1N*10^(peak_diff_db/10) % Pos. side Peak
+        fswell = dfp/2;
+        Eswell = (E3 + E4) / S1P;
+        Rswell = (S3 + S4) / S1P;
+    else                   % Use both Peaks (within peak_diff_db of Peak or dom = 0)
+        fswell = (dfp+dfn)/4;
+        Eswell = (E1+E2+E3+E4) / (S1P + S1N);
+        Rswell = (S1+S2+S3+S4) / (S1P + S1N);
+    end
+% end
+
+if isnan(dfn) && ~isnan(dfp)
+        fswell = dfp/2;
+        Eswell = (E3 + E4) / S1P;
+        Rswell = (S3 + S4) / S1P;
+end
+
+if isnan(dfp) && ~isnan(dfn)
+        fswell = dfn/2;
+        Eswell = (E1 + E2) / S1N;
+        Rswell = (S1 + S2) / S1N;
+end
+
+end % end of main function
+
+%% Internal function: swell_peak.m
+%  It is used to find the location of the swell peak
+function [fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)
+%
+%% [fp,Ep,Sp,i]=swell_peak(freq,PXY,f_low,f_high)
+%
+% Function to find the location of the swell peak (fp) using a 4th order
+% SNR weighting. It looks for swell peaks in PXY within the range f_low - f_high. 
+% The largest peak that is a a weighted peak is identified. The integral of
+% the swell peak over 5 points (2 points either side of the max) and the 
+% energy at the swell peak  frequency (Ep) is calculated.
+%
+%% Input
+% freq      - Doppler frequency in Hz of radar spectra
+% PXY       - Doppler spectra in linear units
+% f_low     - low freq. for swell region (f_low < swell <= f_high)
+% f_high    - high freq. for swell region
+%
+%% Output
+% fp        - Swell peak frequency (in Hz) SNR^4 weighting with two points on each side of swell peak
+% Ep        - Max Doppler enegy at swell frequency peak
+% Sp        - Integrated Doppler energy over 5 points centered at the swell peak
+% i         - Indices of the integration for E_wang
+%
+%% Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris
+%
+% This file is part of RadarWIC.
+%
+% RadarWIC is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program.  If not, see <https://www.gnu.org/licenses/>.
+%
+np = 2; % Use 2 points on each side for centroid frequency and integral
+
+i = find(freq >= f_low  &  freq <= f_high); % find indices of swell region
+if isempty(i)
+    fp = nan;
+    Ep = nan;
+    Sp = nan;
+    return
+end
+f = freq(i(1):i(end) + np);     % Actual freqs
+S = PXY((i(1):i(end) + np));    % Power in swell region
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+if length (S)<3
+    locs = [];
+else
+    [pks,locs] = findpeaks(S); % make sure it's a local peak
+end
+if isempty(locs)
+    fp = nan;
+    Ep = nan;
+    Sp = nan;
+    return
+end
+%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+[~,loci] = max(pks);          % biggest local peak
+j = locs(loci);
+%
+jmin = max(1,j-np);
+jmax = min(length(S),j+np);
+j = jmin:jmax;
+f = f(j);
+S = S(j);
+f = f(:);
+S = S(:);
+%
+n = 4;                         % 4th order weighting
+fp = sum(f.*S.^n)/sum(S.^n);   % ^n weighted frequency (SNR weighted) around peak
+Sp = trapz(f,S);               % integral
+Ep = interp1(f,S,fp,'linear'); % Energy at swell peak frequency from ^n weighting (4th order)
+end
+##### SOURCE END #####
+--></body></html>

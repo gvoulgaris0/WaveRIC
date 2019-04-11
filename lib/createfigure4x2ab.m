@@ -44,20 +44,17 @@ set(axes1,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','XTickLabel',{},...
     'YMinorTick','on','YScale','log');
-
 % Create legend
-legend(['in situ ' snamea],['in inversion ' snamea],...
-    ['in situ ' snameb],['in inversion ' snameb],'f^{-4}','f^{-5}')
+legend(['in situ ' snamea],['inversion ' snamea],...
+    ['in situ ' snameb],['inversion ' snameb],'f^{-4}','f^{-5}')
 legend1 = legend(axes1,'show');
 set(legend1,...
     'Position',[0.0905188453505348 0.773758279572319 0.228409094051881 0.0897468983634445],...
     'LineWidth',1,...
     'FontSize',10);
-
 % Create axes
 axes2 = axes('Position',[0.09 0.53 0.44 0.215]);
 hold(axes2,'on');
-
 % Create loglog
 loglog(X1b,Y1b,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1]);
 % Create loglog
@@ -65,15 +62,12 @@ loglog(X2b,Y2b,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0]);
 loglog(X1bb,Y1bb,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1],'linestyle','-.');
 % Create loglog
 loglog(X2bb,Y2bb,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0],'linestyle','-.');
-
 loglog([0.15 0.5],a4*[0.15 0.5].^(-4))
 loglog([0.15 0.5],a5*[0.15 0.5].^(-5))
-
 % Create text
 text('LineWidth',1,'FontName','arial','String','B','Position',[0.055 20 0]);
 % Create ylabel
 ylabel('S(f) (m^{2}/Hz)','LineWidth',1,'FontName','arial');
-
 % Uncomment the following line to preserve the X-limits of the axes
 xlim(axes2,[0.052 0.5]);
 % Uncomment the following line to preserve the Y-limits of the axes
@@ -87,11 +81,9 @@ set(axes2,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','XTickLabel',{},...
     'YMinorTick','on','YScale','log');
-
 % Create axes
 axes3 = axes('Position',[0.09 0.295 0.44 0.215]);
 hold(axes3,'on');
-
 % Create loglog
 loglog(X1c,Y1c,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1]);
 % Create loglog
@@ -101,13 +93,10 @@ loglog(X1cc,Y1cc,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1],'linestyle','-.');
 loglog(X2cc,Y2cc,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0],'linestyle','-.');
 loglog([0.15 0.5],a4*[0.15 0.5].^(-4))
 loglog([0.15 0.5],a5*[0.15 0.5].^(-5))
-
 % Create text
 text('LineWidth',1,'FontName','arial','String','C','Position',[0.055 20 0]);
-
 % Create ylabel
 ylabel('S(f) (m^{2}/Hz)','LineWidth',1,'FontName','arial');
-
 % Uncomment the following line to preserve the X-limits of the axes
  xlim(axes3,[0.052 0.5]);
 % Uncomment the following line to preserve the Y-limits of the axes
@@ -121,12 +110,10 @@ set(axes3,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','XTickLabel',{},...
     'YMinorTick','on','YScale','log');
-
 % Create axes
 axes4 = axes('Position',...
     [0.0881060606060606 0.0600000000000001 0.440000000000001 0.215]);
 hold(axes4,'on');
-
 % Create loglog
 loglog(X1d,Y1d,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1]);
 % Create loglog
@@ -136,14 +123,11 @@ loglog(X1dd,Y1dd,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1],'linestyle','-.');
 loglog(X2dd,Y2dd,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0],'linestyle','-.');
 loglog([0.15 0.5],a4*[0.15 0.5].^(-4))
 loglog([0.15 0.5],a5*[0.15 0.5].^(-5))
-
 text('LineWidth',1,'FontName','arial','String','D','Position',[0.055 20 0]);
 % Create ylabel
 ylabel('S(f) (m^{2}/Hz)','LineWidth',1,'FontName','arial');
-
 % Create xlabel
 xlabel('f (Hz)','LineWidth',1,'FontName','arial');
-
 % Uncomment the following line to preserve the X-limits of the axes
  xlim(axes4,[0.052 0.5]);
 % Uncomment the following line to preserve the Y-limits of the axes
@@ -157,11 +141,9 @@ set(axes4,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','YMinorTick','on',...
     'YScale','log');
-
 % Create axes
 axes5 = axes('Position',[0.542424242424242 0.765 0.44 0.215]);
 hold(axes5,'on');
-
 % Create loglog
 loglog(X1e,Y1e,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1]);
 % Create loglog
@@ -171,10 +153,8 @@ loglog(X1ee,Y1ee,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1],'linestyle','-.');
 loglog(X2ee,Y2ee,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0],'linestyle','-.');
 loglog([0.15 0.5],a4*[0.15 0.5].^(-4))
 loglog([0.15 0.5],a5*[0.15 0.5].^(-5))
-
 % Create text
 text('LineWidth',1,'FontName','arial','String','E','Position',[0.055 20 0]);
-
 % Uncomment the following line to preserve the X-limits of the axes
  xlim(axes5,[0.052 0.5]);
 % Uncomment the following line to preserve the Y-limits of the axes
@@ -188,6 +168,7 @@ set(axes5,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','XTickLabel',{},...
     'YMinorTick','on','YScale','log','YTickLabel',{});
+
 
 % Create axes
 axes6 = axes('Position',[0.542424242424242 0.53 0.44 0.215]);
@@ -216,7 +197,6 @@ set(axes6,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','XTickLabel',{},...
     'YMinorTick','on','YScale','log','YTickLabel',{});
-
 % Create axes
 axes7 = axes('Position',[0.542424242424242 0.295 0.44 0.215]);
 hold(axes7,'on');
@@ -229,9 +209,7 @@ loglog(X1gg,Y1gg,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1],'linestyle','-.');
 loglog(X2gg,Y2gg,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0],'linestyle','-.');
 loglog([0.15 0.5],a4*[0.15 0.5].^(-4))
 loglog([0.15 0.5],a5*[0.15 0.5].^(-5))
-
 text('LineWidth',1,'FontName','arial','String','G','Position',[0.055 20 0]);
-
 % Uncomment the following line to preserve the X-limits of the axes
  xlim(axes7,[0.052 0.5]);
 % Uncomment the following line to preserve the Y-limits of the axes
@@ -245,11 +223,9 @@ set(axes7,'FontName','arial','GridAlpha',1,'GridColor',[0.8 0.8 0.8],...
     'GridLineStyle',':','LineWidth',1,'TickDir','out','TickLength',[0.01 0.01],...
     'XMinorGrid','on','XMinorTick','on','XScale','log','XTickLabel',{},...
     'YMinorTick','on','YScale','log','YTickLabel',{});
-
 % Create axes
 axes8 = axes('Position',[0.542424242424242 0.06 0.44 0.215]);
 hold(axes8,'on');
-
 % Create loglog
 loglog(X1h,Y1h,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1]);
 % Create loglog
@@ -259,7 +235,6 @@ loglog(X1hh,Y1hh,'MarkerSize',8,'LineWidth',1,'Color',[0 0 1],'linestyle','-.');
 loglog(X2hh,Y2hh,'MarkerSize',8,'LineWidth',1,'Color',[1 0 0],'linestyle','-.');
 loglog([0.15 0.5],a4*[0.15 0.5].^(-4))
 loglog([0.15 0.5],a5*[0.15 0.5].^(-5))
-
 text('LineWidth',1,'FontName','arial','String','H','Position',[0.055 20 0]);
 xlim(axes8,[0.052 0.5]);
 ylim(axes8,[0.003 50]);

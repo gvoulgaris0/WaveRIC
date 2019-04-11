@@ -47,3 +47,7 @@ Highf   = 0.5;      % Maximum wave freq (Hz); defines the second order upper lim
 Lowf    = 0.025;    % Minimum wave freq (Hz); it defines the limit between 1st and 2nd order Doppler spectra
 minf    = 0.02;     % Min halfwidth of Bragg Peak
 minfs   = 0.05;     % Lowest swell peak frequency allowed (Hz)
+
+%% Account for different ranges of wave frequencies obtained from the inner and outer side bands (for some HF radar operating frequencies the inner sideband of the Doppler spectrum (range 0 to Bragg freq) is too narrow, limiting the range of wave frequencies to a smaller range than that derived from the outer sideband).  
+%
+flim = 0.05;        % Lower Doppler frequency allowed to be used for estimating wave frequency (inner sideband limit) 

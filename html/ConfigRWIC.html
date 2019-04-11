@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>ConfigRWIC.m</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-17"><meta name="DC.source" content="ConfigRWIC.m"><style type="text/css">
+      --><title>ConfigRWIC.m</title><meta name="generator" content="MATLAB 9.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-11"><meta name="DC.source" content="ConfigRWIC.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>ConfigRWIC.m</h1><!--introduction--><p>Configuration file that contains all adjustable parameters for swell and the Radar Wave Inversion Code (RWIC)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</a></li><li><a href="#2">Global variables</a></li><li><a href="#3">System constants</a></li><li><a href="#4">Parameters defining details of analysis to be used</a></li><li><a href="#5">Parameters defining where to look for swell and second order spectra</a></li></ul></div><h2 id="1">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</h2><p>This file is part of RadarWIC.</p><p>RadarWIC is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p><h2 id="2">Global variables</h2><pre class="codeinput"><span class="keyword">global</span> fradar g
+  </style></head><body><div class="content"><h1>ConfigRWIC.m</h1><!--introduction--><p>Configuration file that contains all adjustable parameters for swell and the Radar Wave Inversion Code (RWIC)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</a></li><li><a href="#2">Global variables</a></li><li><a href="#3">System constants</a></li><li><a href="#4">Parameters defining details of analysis to be used</a></li><li><a href="#5">Parameters defining where to look for swell and second order spectra</a></li><li><a href="#6">Account for different ranges of wave frequencies obtained from the inner and outer side bands (for some HF radar operating frequencies the inner sideband of the Doppler spectrum (range 0 to Bragg freq) is too narrow, limiting the range of wave frequencies to a smaller range than that derived from the outer sideband).</a></li></ul></div><h2 id="1">Copyright 2019 Zaid Alattabi, Douglas Cahl, George Voulgaris</h2><p>This file is part of RadarWIC.</p><p>RadarWIC is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.</p><p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</p><p>You should have received a copy of the GNU General Public License along with this program.  If not, see <a href="https://www.gnu.org/licenses/">https://www.gnu.org/licenses/</a>.</p><h2 id="2">Global variables</h2><pre class="codeinput"><span class="keyword">global</span> fradar g
 </pre><h2 id="3">System constants</h2><pre class="codeinput">g       = 9.81;                     <span class="comment">% Gravity acceleration (m/s2)</span>
 lbragg  = 299.8/2/fradar;           <span class="comment">% Bragg wavelength (m)</span>
 fbragg  = sqrt(g*2*pi/lbragg)/2/pi; <span class="comment">% Bragg frequency (Hz)</span>
@@ -83,7 +83,8 @@ maxdf = maxv/lbragg;<span class="comment">% Maximum Doppler shift expected (used
 Lowf    = 0.025;    <span class="comment">% Minimum wave freq (Hz); it defines the limit between 1st and 2nd order Doppler spectra</span>
 minf    = 0.02;     <span class="comment">% Min halfwidth of Bragg Peak</span>
 minfs   = 0.05;     <span class="comment">% Lowest swell peak frequency allowed (Hz)</span>
-</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+</pre><h2 id="6">Account for different ranges of wave frequencies obtained from the inner and outer side bands (for some HF radar operating frequencies the inner sideband of the Doppler spectrum (range 0 to Bragg freq) is too narrow, limiting the range of wave frequencies to a smaller range than that derived from the outer sideband).</h2><pre class="codeinput">flim = 0.05;        <span class="comment">% Lower Doppler frequency allowed to be used for estimating wave frequency (inner sideband limit)</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% ConfigRWIC.m
 % Configuration file that contains all adjustable parameters for swell and 
@@ -134,5 +135,10 @@ Highf   = 0.5;      % Maximum wave freq (Hz); defines the second order upper lim
 Lowf    = 0.025;    % Minimum wave freq (Hz); it defines the limit between 1st and 2nd order Doppler spectra
 minf    = 0.02;     % Min halfwidth of Bragg Peak
 minfs   = 0.05;     % Lowest swell peak frequency allowed (Hz)
+
+%% Account for different ranges of wave frequencies obtained from the inner and outer side bands (for some HF radar operating frequencies the inner sideband of the Doppler spectrum (range 0 to Bragg freq) is too narrow, limiting the range of wave frequencies to a smaller range than that derived from the outer sideband).  
+%
+flim = 0.05;        % Lower Doppler frequency allowed to be used for estimating wave frequency (inner sideband limit) 
+
 ##### SOURCE END #####
 --></body></html>

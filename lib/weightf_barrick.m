@@ -1,7 +1,8 @@
 %% weightf_barrick.m
 %  Estimating the weighting function of Barrick 1977
-%
+%%
 function w = weightf_barrick(fb,fw,side,cut1)
+%% w = weightf_barrick(fb,fw,side,[cut1]) 
 %
 % This function calculates the Barrick's (1977) weighting function
 % to eliminate the contribution of wave-wave interactions in the second

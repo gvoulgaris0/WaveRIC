@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>PXYsideband.m</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-02-17"><meta name="DC.source" content="PXYsideband.m"><style type="text/css">
+      --><title>PXYsideband.m</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-10"><meta name="DC.source" content="PXYsideband.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -105,10 +105,12 @@ E  = PXY(i);
     fwmin = min(fw1);       <span class="comment">% local min closest to Bragg peak (lowest wave frequency)</span>
 
     <span class="comment">% keep only sideband above local minimum</span>
-    j  = fw &gt;= fwmin;
-    fw = fw(j);
-    E  = E(j);      <span class="comment">% unweighted second order energy</span>
-    f  = f(j);
+    <span class="keyword">if</span> ~isempty(fwmin)
+        j  = fw &gt;= fwmin;
+        fw = fw(j);
+        E  = E(j);      <span class="comment">% unweighted second order energy</span>
+        f  = f(j);
+    <span class="keyword">end</span>
 <span class="keyword">end</span>
 
 <span class="comment">% check for inner or outer sidebands</span>
@@ -197,10 +199,12 @@ if switc1 ~= 999
     fwmin = min(fw1);       % local min closest to Bragg peak (lowest wave frequency)
     
     % keep only sideband above local minimum
-    j  = fw >= fwmin;
-    fw = fw(j);
-    E  = E(j);      % unweighted second order energy
-    f  = f(j);
+    if ~isempty(fwmin) 
+        j  = fw >= fwmin;
+        fw = fw(j);
+        E  = E(j);      % unweighted second order energy
+        f  = f(j);
+    end
 end
 
 % check for inner or outer sidebands
@@ -213,6 +217,7 @@ end
 % Deep-water weighting function
 W  = weightf_barrick(fbragg,fw,Wn); % Barrick weighting function
 Ew = E./W;      % Weighted second order energy
+
 end
 
 

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>Example script on how to use the RadarWIC code to invert the HF Radar signal</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-03-13"><meta name="DC.source" content="master_testing.m"><style type="text/css">
+      --><title>Example script on how to use the RadarWIC code to invert the HF Radar signal</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-04-10"><meta name="DC.source" content="master_testing.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -103,8 +103,7 @@ subplot_spec4x2(aX1G,aY1G,aX2G,aY2G,7);
 subplot_spec4x2(aX1H,aY1H,aX2H,aY2H,8);
 legend(<span class="string">'in-situ'</span>,<span class="string">'inverted'</span>);
 </pre><pre class="codeoutput">dop_A.mat
-    0.6811
-
+Ratio = 0.68108
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
@@ -113,18 +112,16 @@ Wind  :  4.18  0.07 0.17 89.4  78.0
 Swell :  0.00  NaN NaN 
 Hybrid:  4.18  0.07 0.17 89.4  78.0
 dop_B.mat
-    0.2145
-
+Ratio = 0.21484
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  2.57  0.11 0.18 82.1  96.5
+Wind  :  2.56  0.11 0.18 82.0  96.5
 Swell :  0.00  NaN NaN 
-Hybrid:  2.57  0.11 0.18 82.1  96.5
+Hybrid:  2.56  0.11 0.18 82.0  96.5
 dop_C.mat
-    0.1592
-
+Ratio = 0.1592
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
@@ -133,18 +130,16 @@ Wind  :  1.25  0.13 0.19 89.0  67.2
 Swell :  0.00  NaN NaN 
 Hybrid:  1.25  0.13 0.19 89.0  67.2
 dop_D.mat
-    0.3329
-
+Ratio = 0.33303
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.34  0.11 0.18 87.0  104.3
+Wind  :  1.34  0.11 0.18 87.2  104.4
 Swell :  0.00  NaN NaN 
-Hybrid:  1.34  0.11 0.18 87.0  104.3
+Hybrid:  1.34  0.11 0.18 87.2  104.4
 dop_E.mat
-    1.1564
-
+Ratio = 1.1568
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
@@ -153,35 +148,32 @@ Wind  :  1.88  0.09 0.14 31.9  72.6
 Swell :  1.47  0.09 0.08 
 Hybrid:  2.08  0.09 0.13 31.6  66.9
 dop_F.mat
-    0.4813
-
+Ratio = 0.48125
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.29  0.11 0.18 61.8  104.6
+Wind  :  1.29  0.11 0.18 61.7  104.6
 Swell :  0.00  NaN NaN 
-Hybrid:  1.29  0.11 0.18 61.8  104.6
+Hybrid:  1.29  0.11 0.18 61.7  104.6
 dop_G.mat
-    0.3685
-
+Ratio = 0.36879
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.99  0.13 0.18 48.9  46.3
+Wind  :  1.99  0.13 0.18 48.8  46.1
 Swell :  0.00  NaN NaN 
-Hybrid:  1.99  0.13 0.18 48.9  46.3
+Hybrid:  1.99  0.13 0.18 48.8  46.1
 dop_H.mat
-    0.4085
-
+Ratio = 0.40891
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.61  0.12 0.17 73.4  68.6
+Wind  :  1.60  0.12 0.17 73.4  68.6
 Swell :  0.00  NaN NaN 
-Hybrid:  1.61  0.12 0.17 73.4  68.6
+Hybrid:  1.60  0.12 0.17 73.4  68.6
 </pre><img vspace="5" hspace="5" src="master_testing_01.png" alt=""> <img vspace="5" hspace="5" src="master_testing_02.png" alt=""> <img vspace="5" hspace="5" src="master_testing_03.png" alt=""> <img vspace="5" hspace="5" src="master_testing_04.png" alt=""> <img vspace="5" hspace="5" src="master_testing_05.png" alt=""> <img vspace="5" hspace="5" src="master_testing_06.png" alt=""> <img vspace="5" hspace="5" src="master_testing_07.png" alt=""> <img vspace="5" hspace="5" src="master_testing_08.png" alt=""> <img vspace="5" hspace="5" src="master_testing_09.png" alt=""> <h2 id="2">Use data from site O2 (see Alattabi et al., 2019)</h2><pre class="codeinput">basedir = <span class="string">'data/O2/'</span>;
 fdir = dir(basedir);
 <span class="keyword">for</span> i = 3:length(fdir)
@@ -206,8 +198,7 @@ fdir = dir(basedir);
     <span class="keyword">end</span>
 <span class="keyword">end</span>
 </pre><pre class="codeoutput">dop_A.mat
-    0.4003
-
+Ratio = 0.40034
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
@@ -216,8 +207,7 @@ Wind  :  4.85  0.16 0.20 72.3  67.0
 Swell :  0.00  NaN NaN 
 Hybrid:  4.85  0.16 0.20 72.3  67.0
 dop_B.mat
-    0.8774
-
+Ratio = 0.8774
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
@@ -226,38 +216,34 @@ Wind  :  4.00  0.08 0.15 44.1  56.0
 Swell :  0.00  NaN NaN 
 Hybrid:  4.00  0.08 0.15 44.1  56.0
 dop_C.mat
-    0.2751
-
+Ratio = 0.27516
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.53  0.14 0.18 58.7  64.6
+Wind  :  1.52  0.14 0.18 58.6  64.5
 Swell :  0.00  NaN NaN 
-Hybrid:  1.53  0.14 0.18 58.7  64.6
+Hybrid:  1.52  0.14 0.18 58.6  64.5
 dop_D.mat
-    0.5154
-
+Ratio = 0.51556
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.90  0.14 0.17 132.8  122.0
+Wind  :  1.90  0.14 0.17 132.9  122.1
 Swell :  0.00  NaN NaN 
-Hybrid:  1.90  0.14 0.17 132.8  122.0
+Hybrid:  1.90  0.14 0.17 132.9  122.1
 dop_E.mat
-    1.6117
-
+Ratio = 1.6118
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  2.35  0.09 0.13 35.0  54.9
+Wind  :  2.35  0.09 0.13 35.0  54.8
 Swell :  1.87  0.09 0.09 
 Hybrid:  2.50  0.09 0.13 35.2  53.1
 dop_F.mat
-    0.7542
-
+Ratio = 0.75414
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
@@ -266,18 +252,16 @@ Wind  :  2.10  0.10 0.16 107.0  113.8
 Swell :  0.00  NaN NaN 
 Hybrid:  2.10  0.10 0.16 107.0  113.8
 dop_G.mat
-    0.3426
-
+Ratio = 0.34289
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12
           Hs   fp  fm  theta_p theta_m
-Wind  :  1.58  0.13 0.19 41.0  48.0
+Wind  :  1.58  0.13 0.19 40.8  47.8
 Swell :  0.00  NaN NaN 
-Hybrid:  1.58  0.13 0.19 41.0  48.0
+Hybrid:  1.58  0.13 0.19 40.8  47.8
 dop_H.mat
-    0.4872
-
+Ratio = 0.48763
 Wave Inversion model RadarWIC as described in Alattabi et al (2019)
 Calibration factors: aw=0.25  as=0.05
 Swell broadening sigma =0.011Swell/Wind fc(Hz)=0.12

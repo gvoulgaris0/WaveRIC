@@ -47,3 +47,9 @@ Highf   = 0.5;      % Maximum wave freq (Hz); defines the second order upper lim
 Lowf    = 0.025;    % Minimum wave freq (Hz); it defines the limit between 1st and 2nd order Doppler spectra
 minf    = 0.02;     % Min halfwidth of Bragg Peak
 minfs   = 0.05;     % Lowest swell peak frequency allowed (Hz)
+
+%% For cases when the 2nd order in the inner sideband extends to wave frequencies less than those of the outer side band (i.e., the Bragg frequency is close to 0 Hz)
+% 
+double_outer = 1;   % doubles the outer sideband when the inner is flim Hz in the Doppler spectrum
+flim = 0.05;        % lower inner sideband limit (i.e., if flim=0.01 then the range is +/- 0.01 Hz);
+

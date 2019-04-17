@@ -62,11 +62,11 @@ Rwind = nansum(Rw(j));
 j = f <= fc; % select swell wave frequencies
 Rswell= nansum(Rw(j));
 Ratio = Rswell/Rwind;
-disp(['Ratio = ' num2str(Ratio)])
+disp(['Ratio = ' num2str(Ratio)]) 
 % choose right method
 if Ratio > 1 % Swell dominated conditions for deep waters (in the paper = 1.0)
     j = find(Sf_swell > Sf_wind,2,'last');
-    if isempty(j)
+    if isempty(j)  || length(j(:))<2
         Sf = Sf_wind;
     else
         if j(2) == length(Sf_swell)

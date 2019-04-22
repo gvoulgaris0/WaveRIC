@@ -42,7 +42,11 @@ function [bulk] = waveparams(f,Sf,th)
 %
 %% Main function
 if sum(~isnan(Sf)) == 0
-    bulk = nan;
+if nargin > 2
+    bulk = nan(length([1:5]),1)';
+else
+    bulk = nan(length([1:3]),1)';  
+end
     return
 end
 

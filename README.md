@@ -1,4 +1,5 @@
-# WaveRIC: Wave Radar Inversion Code 
+# WaveRIC: Wave Radar Inversion Code ![image](https://user-images.githubusercontent.com/48567321/126871081-83260317-951c-478d-a180-f007d3c0c8c0.png)
+
 (see Alattabi, Cahl and Voulgaris (2019), JTECH)  
 
 This is the code described in Alattabi et al. (2019) for the inversion of the 2nd-order of a Doppler spectrum from an HF/VHF radar system. This is a hybrid, empirical radar wave inversion technique that treats swell and wind waves separately. Prior to the inversion, the 2nd order spectrum is normalized using Barrick’s (1977b) weighting function as this removes harmonic and corner reflection peaks from the inversion and improves the results. 
